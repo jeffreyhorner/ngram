@@ -1,3 +1,4 @@
+library(Rack)
 ngram_url = 'http://app.rapache.net/ngram/'
 fixup <- function(content){
     x <- gsub('^ *','',strsplit(Utils$unescape(content),',')[[1]])
@@ -10,6 +11,7 @@ lengthen_df <- function(x){
     names(x) <- c(paste('count',seq(1,length(xnames)-1),sep='.'),'year')
     x <- reshape(x,varying=seq(1,length(xnames)-1),direction='long',timevar='ngram')
     x$ngram <- factor(xnames[x$ngram])
+    x$prop <- x$count/sum(x$count)
     x
 }
 

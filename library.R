@@ -66,14 +66,22 @@ rApache_handler <- function(){
 		text <- POST$text
 	if (is.null(text)) return(OK)
 
+	
 	if (ngram==0)
 		text <- strsplit(text,',')[[1]]
 	else
 		text <- parse_to_ngram(text,ngrams=ngram)
 
-	x <- ngram_matches(text)
+	na.rm <- FALSE
+	if (!is.null(GET$na.rm) && GET$na.rm=='1'){
+	    na.rm <- TRUE
+	}
+	x <- ngram_matches(text,na.rm)
 	y <- data.frame(x)
-	names(y) <- attr(x,'ngrams')
+
+	if (!na.rm)
+	    names(y) <- attr(x,'ngrams')
+
 	write.csv(y,row.names=FALSE)
 	OK
 }

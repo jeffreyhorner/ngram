@@ -1,6 +1,5 @@
 library(ggplot2)
 library(brew)
-library(Cairo)
 source('library.R')
 
 Brewery <- setRefClass(
@@ -46,9 +45,9 @@ app <- Rack::Builder$new(
 		content <- 'Atlantis, El Dorado'
 	    data <- ngram_query(content)
 	    t <- paste(tempfile(),'.png',sep='')
-	    CairoPNG(filename=t,width=900,height=330)
+	    png(filename=t,width=900,height=330)
             p <- ggplot(data,aes(x=year,y=count,grouping=ngram))
-	    print(p + geom_line(aes(colour=ngram)))
+	    print(p + geom_line(aes(colour=ngram)) + scale_y_log10() + ylab("Log (count)"))
 	    dev.off()
 	    fi <- file.info(t)
 	    body <- t
