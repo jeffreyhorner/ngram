@@ -1,0 +1,90 @@
+<%
+    if (is.null(req$GET()[['content']])){
+	content <- 'Atlantis, El Dorado'
+    } else {
+	content <- Utils$unescape(req$GET()$content)
+    }
+%>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Google Ngram Viewer</title>
+    <link rel="stylesheet" type="text/css"
+          href="http://www.google.com/css/go-x.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://www.google.com/css/modules/buttons/g-button.css">
+  </head>
+
+  <body id="container">
+    <h1>
+      <table>
+       <tr>
+         <td style="padding-top: 0.5em"><a href="http://ngrams.googlelabs.com">
+             
+             <img src="http://www.google.com/intl/en_us_ALL/images/logos/labs_logo.gif"
+                  alt="Google Labs"></a>
+         </td>
+         <td>Books Ngram Viewer</td>
+       </tr>
+      </table>
+    </h1>
+    
+<center>
+<table>
+<tr>
+<td>
+    <img src="<%=req$to_url('/graph',content=Utils$escape(content))%>"
+     height="330"
+     width="900"
+     method="get">
+</td>
+<td>
+</td>
+</tr>
+
+</table>
+
+</center>
+
+
+<blockquote>
+    <form action="<%=req$to_url('/brew/app2.rhtml')%>" method="get">
+  <div>Graph the following block of <b>case-sensitive</b> text
+  </div>
+  <div>between
+    <input type="text"
+    name="year_start"
+    size="4"
+    value="1890"
+    maxlength=4> 
+    and
+    <input type="text"
+    name="year_end"
+    size="4"
+    value="2008"
+    maxlength=4> 
+  from the corpus English with smoothing of 0:
+ </div>
+ <div><input type="submit" value="Search lots of books">
+ </div>
+ <textarea cols="80" rows="100" name="content"><%=content%></textarea>
+</form>
+</blockquote>
+
+
+<center>Run your own experiment!  Raw data is available for download
+  <a href="/datasets">here</a>.
+</center>
+
+
+
+    <div id="about" style="border-top: 1px solid #ccc;">&copy; 2010 Google -
+      <a href="http://www.google.com/about.html">About Google</a> -
+
+      <a href="http://www.google.com/intl/en/googlebooks/about.html">About
+        Google Books</a> -
+      <a href="/info">About Google Books NGram Viewer</a>
+    </div>
+    <!-- Analytics -->
+  </body>
+</html>

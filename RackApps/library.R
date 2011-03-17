@@ -25,7 +25,16 @@ ngram_query <- function(content,wide=FALSE){
 # for a single query on a whoe bunch of text chopped up
 # as 2 grams
 ngram_query2 <- function(content,wide=FALSE){
-    x<- read.csv(paste(ngram_url,'?ngram=2&text=',fixup(content),sep=''))
-    if (wide) return(x)
-    lengthen_df(cbind(x,year=seq(1890,2008)))
+    erFun <- function(e) NULL
+    x<- tryCatch(read.csv(paste(ngram_url,'?na.rm=1&ngram=2&text=',fixup(content),sep='')),error = erFun)
+    if (!is.null(x)){
+	x <- data.frame(lapply(x,as.numeric))
+	if (wide) {
+	    data.frame(x,x-rowMeans(x),year=seq(1890,2008))
+	} else {
+	    lengthen_df(cbind(x,year=seq(1890,2008)))
+	}
+    } else {
+	NULL
+    }
 }
